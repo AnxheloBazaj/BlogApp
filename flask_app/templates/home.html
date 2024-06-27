@@ -1,0 +1,25 @@
+<!-- real time notifications -->
+
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Existing post list -->
+
+    <div id="notifications"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket = io();
+        
+        socket.on('connect', function() {
+            console.log('Connected to server');
+        });
+
+        socket.on('new_post', function(data) {
+            var notificationsDiv = document.getElementById('notifications');
+            var newNotification = document.createElement('div');
+            newNotification.innerHTML = '<p>New post: <a href="/post/' + data.id + '">' + data.title + '</a> by ' + data.author + '</p>';
+            notificationsDiv.appendChild(newNotification);
+        });
+    </script>
+{% endblock %}
