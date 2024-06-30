@@ -97,10 +97,6 @@ def admin_dashboard():
     vehicles = Vehicle.getAllVehicles()
     return render_template('admin_dashboard.html', loggedAdmin=admin_data,vehicles = vehicles)
 
-@app.route('/home')
-def home():
-    return render_template('home.html')
-
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
@@ -116,7 +112,7 @@ def dashboard():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect('/home')
+    return redirect('/login')
 
 @app.route('/change_password')
 def change_password():
