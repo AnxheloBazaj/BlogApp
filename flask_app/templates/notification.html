@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+    <div class="flex flex-col min-h-screen lg:flex-row">
+        <!-- Sidebar -->
+        <div class="w-full lg:w-1/4 bg-white p-4 border-b lg:border-r lg:border-b-0">
+            <div class="sticky top-0 space-y-4">
+                <div class="text-2xl font-bold mb-6">Twitter</div>
+                <nav class="space-y-4">
+                    <a href="index.html" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Home</a>
+                    <a href="explore.html" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Explore</a>
+                    <a href="notifications.html" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Notifications</a>
+                    <a href="messages.html" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Messages</a>
+                    <a href="bookmarks.html" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Bookmarks</a>
+                    <a href="lists.html" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Lists</a>
+                    <a href="profile.html" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Profile</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">More</a>
+                </nav>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-full w-full mt-4">Tweet</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-4">
+            <!-- Notifications Section -->
+            <div class="bg-white p-4 rounded-lg shadow-md mb-4">
+                <h2 class="font-bold text-lg">Notifications</h2>
+                <div class="mt-2 space-y-4">
+                    <div class="flex space-x-4">
+                        <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
+                        <div class="w-full">
+                            <div class="flex justify-between">
+                                <div>
+                                    <span class="font-bold">User Name</span>
+                                    <span class="text-gray-600">@username</span>
+                                    <span class="text-gray-600">liked your tweet</span>
+                                </div>
+                                <div class="text-gray-600">1h</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Repeat the above block for more notifications -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Extra Section -->
+        <div class="lg:w-1/4 p-4 space-y-4">
+            <div class="bg-white p-4 rounded-lg shadow-md sticky top-0">
+                <h2 class="font-bold text-lg mb-2">Trends for you</h2>
+                <div class="space-y-2">
+                    <div class="text-gray-600">#TrendingTopic1</div>
+                    <div class="text-gray-600">#TrendingTopic2</div>
+                    <div class="text-gray-600">#TrendingTopic3</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

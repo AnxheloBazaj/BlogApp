@@ -1,7 +1,7 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 
-class post:
+class Post:
     db_name = 'blogApp'
     def __init__( self , data ):
         self.category = data['category']
@@ -13,12 +13,15 @@ class post:
 
     @classmethod
     def create(cls,data):
-        query = 'INSERT INTO posts (description, image, user_id) VALUES ( %(description)s, %(image)s, %(user_id)s);'
+        if data['image']:
+            query = 'INSERT INTO posts (description, image, user_id) VALUES ( %(description)s, %(image)s, %(user_id)s);'
+        else:
+            query = 'INSERT INTO posts (description, user_id) VALUES ( %(description)s, %(user_id)s);'
         return connectToMySQL(cls.db_name).query_db(query, data)
     
     @classmethod
     def getAllposts(cls):
-        query = 'SELECT * FROM posts;'
+        query = 'SELECT * FROM posts left join users on posts.user_id = users.id;'
         results = connectToMySQL(cls.db_name).query_db(query)
         posts= []
         if results:
@@ -119,14 +122,6 @@ class post:
     @staticmethod
     def validate_post(data):
         is_valid = True
-        if len(data['title'])<2:
-            flash('Title should include more than 3 characters!','title')
-            is_valid=False
-        if len(data['network'])<2:
-            flash('Network should include more than 3 characters!', 'network')
-            is_valid=False
-        if not data['releaseDate']:
-            flash('Date must not be blank!', 'releaseDate')
         if len(data['description'])<2:
             is_valid=False
             flash('Description should include more than 3 characters!', 'description')

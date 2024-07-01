@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Home Template</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        .dark .bg-white { background-color: #1a202c; }
+        .dark .text-gray-600 { color: #e6e8ea; }
+        .dark .border-gray-200 { border-color: #4a5568; }
+        .dark .hover\:bg-gray-200:hover { background-color: #2d3748; }
+    </style>
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
+    <div class="min-h-screen flex flex-col lg:flex-row justify-center">
+        <!-- Main Content -->
+        <div id="tweet" class="w-full lg:w-1/2 p-4">
+            <!-- New Tweet Section -->
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-4">
+                <div class="flex space-x-4">
+                    <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
+                    <textarea class="w-full bg-gray-100 dark:bg-gray-700 p-2 rounded-lg focus:outline-none" rows="2" placeholder="What's happening?"></textarea>
+                </div>
+                <div class="flex justify-end mt-2">
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded-full">Tweet</button>
+                </div>
+            </div>
+
+            <!-- Tweets Feed -->
+            <div class="space-y-4">
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                    <div class="flex space-x-4">
+                        <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
+                        <div class="w-full">
+                            <div class="flex justify-between">
+                                <div>
+                                    <span class="font-bold">User Name</span>
+                                    <span class="text-gray-600 dark:text-gray-400">@username</span>
+                                    <span class="text-gray-600 dark:text-gray-400">· 1h</span>
+                                </div>
+                                <div class="text-gray-600 dark:text-gray-400">•••</div>
+                            </div>
+                            <div class="mt-2">
+                                <p>This is a sample tweet. #hashtag</p>
+                                <img src="https://via.placeholder.com/600x400" alt="Tweet Image" class="mt-2 rounded-lg">
+                            </div>
+                            <div class="flex justify-between mt-2 text-gray-600 dark:text-gray-400">
+                                <span class="hover:text-blue-500"><i class="far fa-comment"></i> 5</span>
+                                <span class="hover:text-green-500"><i class="far fa-retweet"></i> 10</span>
+                                <span class="hover:text-red-500"><i class="far fa-heart"></i> 20</span>
+                                <span class="hover:text-blue-500"><i class="far fa-share-square"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Repeat the above block for more tweets -->
+            </div>
+        </div>
+
+        <!-- Extra Section -->
+        <div class="hidden lg:block w-1/4 p-4 space-y-4">
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md sticky top-0">
+                <h2 class="font-bold text-lg mb-2">Trends for you</h2>
+                <div class="space-y-2">
+                    <div class="text-gray-600 dark:text-gray-400">#TrendingTopic1</div>
+                    <div class="text-gray-600 dark:text-gray-400">#TrendingTopic2</div>
+                    <div class="text-gray-600 dark:text-gray-400">#TrendingTopic3</div>
+                </div>
+            </div>
+            <!-- Additional sections as needed -->
+        </div>
+
+        <!-- Sidebar (at bottom on mobile) -->
+        <div class="w-full lg:w-1/4 bg-white dark:bg-gray-800 p-4 border-t lg:border-r border-gray-200 dark:border-gray-700 lg:order-first">
+            <div class="lg:sticky lg:top-0 space-y-4">
+                <div class="text-2xl font-bold mb-6">Twitter</div>
+                <nav class="space-y-4">
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700 font-semibold">Home</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700 font-semibold">Explore</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700 font-semibold">Notifications</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700 font-semibold">Messages</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700 font-semibold">Bookmarks</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700 font-semibold">Lists</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700 font-semibold">Profile</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 dark:hover:bg-gray-700 font-semibold">More</a>
+                </nav>
+                <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full w-full mt-4">Tweet</button>
+                <button id="theme-toggle" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-full w-full mt-4">Toggle Dark Mode</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // On page load, set the theme from local storage
+        if (localStorage.getItem('theme') === 'dark') {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+    </script>
+</body>
+
+</html>

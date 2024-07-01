@@ -2,6 +2,7 @@ from flask_app import app
 from flask import render_template, redirect, session, request, flash, abort, url_for
 from functools import wraps
 from flask_app.models.user import User
+from flask_app.models.post import Post
 from flask_bcrypt import Bcrypt        
 from datetime import timedelta, datetime
 import pytz
@@ -22,17 +23,17 @@ def session_management():
             session.clear()
             return redirect('/login')
 
-def admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'user_id' not in session:
-            abort(403)
-        user_id = session['user_id']
-        loggedAdmin = User.is_admin(user_id) 
-        if not loggedAdmin:
-            abort(403)
-        return f(*args, **kwargs)
-    return decorated_function
+# def admin_required(f):
+#     @wraps(f)
+#     def decorated_function(*args, **kwargs):
+#         if 'user_id' not in session:
+#             abort(403)
+#         user_id = session['user_id']
+#         loggedAdmin = User.is_admin(user_id) 
+#         if not loggedAdmin:
+#             abort(403)
+#         return f(*args, **kwargs)
+#     return decorated_function
 
 @app.route('/')
 def controller():
@@ -59,7 +60,7 @@ def loginUser():
         return redirect(request.referrer)
     session['user_id'] = user['id']
     session['role'] = user['role']  # Store the role in the session
-    return redirect('/dashboard')
+    return redirect('/home')
 
 @app.route('/register')
 def registerPage():
@@ -85,29 +86,29 @@ def registerUser():
     }
     user_id = User.create(data)
     session['user_id'] = user_id
-    return redirect('/dashboard')
+    return redirect('/home')
 
-@app.route('/admin/dashboard')
-@admin_required
-def admin_dashboard():
-    admin_data = {
-        'username': 'Admin User',
-        'role': 'admin',
-    }
-    vehicles = Vehicle.getAllVehicles()
-    return render_template('admin_dashboard.html', loggedAdmin=admin_data,vehicles = vehicles)
+# @app.route('/admin/dashboard')
+# @admin_required
+# def admin_dashboard():
+#     admin_data = {
+#         'username': 'Admin User',
+#         'role': 'admin',
+#     }
+#     vehicles = Vehicle.getAllVehicles()
+#     return render_template('admin_dashboard.html', loggedAdmin=admin_data,vehicles = vehicles)
 
-@app.route('/dashboard')
-def dashboard():
+@app.route('/home')
+def Home():
     if 'user_id' not in session:
         return redirect('/')
-    vehicles = Vehicle.getAllVehicles()
+    # posts = Post.getAllposts()
     data = {
         'id': session['user_id']
     }
     loggedUser = User.get_user_by_id(data)
-    usersWhoFavourited = Vehicle.getAllFavourites(data)
-    return render_template('dashboard.html', vehicles=vehicles, loggedUser=loggedUser, usersWhoFavourited=usersWhoFavourited)
+    # usersWhoFavourited = Vehicle.getAllFavourites(data)
+    return render_template('homepage.html.', posts=Post.getAllposts(), loggedUser=loggedUser )
 
 @app.route('/logout')
 def logout():

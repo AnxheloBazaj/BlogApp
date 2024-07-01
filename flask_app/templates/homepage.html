@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Home Template</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
+
+<body class="bg-gray-100">
+    <div class="min-h-screen flex">
+        <!-- Sidebar -->
+        <div class="w-1/4 bg-white p-4 border-r border-gray-200">
+            <div class="sticky top-0 space-y-4">
+                <div class="text-2xl font-bold mb-6">Twitter</div>
+                <nav class="space-y-4">
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Home</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Explore</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Notifications</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Messages</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Bookmarks</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Lists</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Profile</a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">More</a>
+                </nav>
+                <a href="#tweet"><button
+                        class="bg-blue-500 hover:bg-black text-white px-4 py-2 rounded-full w-full mt-4">Tweet</button></a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="tweet" class="w-1/2 p-4">
+            <!-- New Tweet Section -->
+            <form action="/create/post" method="POST" enctype="multipart/form-data"
+                class="bg-white p-4 rounded-lg shadow-md mb-4">
+                <div class="flex space-x-4">
+                    <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
+                    <textarea name="description" class="w-full bg-gray-100 p-2 rounded-lg focus:outline-none" rows="2"
+                        placeholder="What's happening?"></textarea>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                    <div class="flex items-center space-x-4">
+                        <button type="button" class="flex items-center text-blue-500 hover:text-blue-600"
+                            onclick="document.getElementById('photo-input').click()">
+                            <i class="fas fa-image">adddd</i>
+                        </button>
+                    </div>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-full">Tweet</button>
+                </div>
+                <input type="file" id="photo-input" name="image" accept="image/png, image/jpg, image/jpeg"
+                    class="hidden" onchange="showPhotoPreview(event)">
+                <div id="photo-preview" class="mt-2 hidden">
+                    <img id="photo-preview-img" src="#" alt="Photo Preview" class="rounded-lg max-h-64">
+                    <button type="button" class="mt-2 text-red-500 hover:text-red-700" onclick="removePhoto()">Remove
+                        Photo</button>
+                </div>
+            </form>
+
+            <!-- Tweets Feed -->
+            <div class="space-y-4">
+                {%if posts%}
+                {%for post in posts%}
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <div class="flex space-x-4">
+                        <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
+                        <div class="w-full">
+                            <div class="flex justify-between relative">
+                                <div>
+                                    <span class="font-bold">{{post.first_name}} {{post.last_name}}</span>
+                                    <!-- <span class="text-gray-600">@username</span> -->
+                                    <span class="text-gray-600">{{post.created_at}}</span>
+                                </div>
+                                {%if loggedUser.id == post.user_id%}
+                                <div class="text-gray-600 relative">
+                                    <button type="button" class="dropdown-toggle focus:outline-none">
+                                        •••
+                                    </button>
+                                    <div
+                                        class="dropdown-menu hidden absolute right-0 mt-2 py-2 w-48 bg-white border rounded shadow-md">
+                                        <a href="" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Edit</a>
+                                        <a href="/delete/post/{{post.id}}"" class=" block px-4 py-2 text-gray-800
+                                            hover:bg-gray-200">Delete</a>
+                                    </div>
+                                </div>
+                                {%endif%}
+                            </div>
+                            <div class="mt-2">
+                                <p class="text-clip w-3/4">{{post.description}}</p>
+                                {%if post.image%}
+                                <img src="/static/UPLOADED_FOLDER/{{post.image}}" alt="Tweet Image"
+                                    class="mt-2 rounded-lg object-cover" style="width: 37rem; height: 25rem;">
+                                {%endif%}
+                            </div>
+                            <div class="flex justify-between mt-2 text-gray-600">
+                                <span class="hover:text-blue-500"><i class="far fa-comment"></i> 5</span>
+                                <span class="hover:text-green-500"><i class="far fa-retweet"></i> 10</span>
+                                <span class="hover:text-red-500"><i class="far fa-heart"></i> 20</span>
+                                <span class="hover:text-blue-500"><i class="far fa-share-square"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+                {%endif%}
+                <!-- <div class="bg-white p-4 rounded-lg shadow-md">
+                    <div class="flex space-x-4">
+                        <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
+                        <div class="w-full">
+                            <div class="flex justify-between relative">
+                                <div>
+                                    <span class="font-bold">User Name</span>
+                                    <span class="text-gray-600">@username</span>
+                                    <span class="text-gray-600">· 1h</span>
+                                </div>
+                                <div class="text-gray-600">
+                                    <button type="button" class="focus:outline-none" onclick="toggleDropdown(event)">
+                                        •••
+                                    </button>
+                                    <div class="dropdown-menu hidden absolute right-0 mt-2 py-2 w-48 bg-white border rounded shadow-md">
+                                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Edit</a>
+                                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <p>This is a sample tweet. #hashtag</p>
+                                <img src="https://via.placeholder.com/600x400" alt="Tweet Image" class="mt-2 rounded-lg">
+                            </div>
+                            <div class="flex justify-between mt-2 text-gray-600">
+                                <span class="hover:text-blue-500"><i class="far fa-comment"></i> 5</span>
+                                <span class="hover:text-green-500"><i class="far fa-retweet"></i> 10</span>
+                                <span class="hover:text-red-500"><i class="far fa-heart"></i> 20</span>
+                                <span class="hover:text-blue-500"><i class="far fa-share-square"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- Repeat the above block for more tweets -->
+            </div>
+
+        </div>
+
+        <!-- Extra Section -->
+        <div class="w-1/4 p-4 space-y-4">
+            <div class="bg-white p-4 rounded-lg shadow-md sticky top-0">
+                <h2 class="font-bold text-lg mb-2">Trends for you</h2>
+                <div class="space-y-2">
+                    <div class="text-gray-600">#TrendingTopic1</div>
+                    <div class="text-gray-600">#TrendingTopic2</div>
+                    <div class="text-gray-600">#TrendingTopic3</div>
+                </div>
+            </div>
+            <!-- Additional sections as needed -->
+        </div>
+    </div>
+
+    <script>
+        function showPhotoPreview(event) {
+            var photoPreview = document.getElementById('photo-preview');
+            var photoPreviewImg = document.getElementById('photo-preview-img');
+            var reader = new FileReader();
+            reader.onload = function () {
+                if (reader.readyState == 2) {
+                    photoPreviewImg.src = reader.result;
+                    photoPreview.classList.remove('hidden');
+                }
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function removePhoto() {
+            var photoInput = document.getElementById('photo-input');
+            var photoPreview = document.getElementById('photo-preview');
+            var photoPreviewImg = document.getElementById('photo-preview-img');
+            photoInput.value = '';
+            photoPreviewImg.src = '';
+            photoPreview.classList.add('hidden');
+        }
+
+        function toggleDropdown(event) {
+            var dropdownMenu = event.target.nextElementSibling;
+            dropdownMenu.classList.toggle('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.addEventListener('click', function (event) {
+                var isClickInsideDropdown = event.target.closest('.dropdown-menu, .dropdown-toggle');
+
+                document.querySelectorAll('.dropdown-menu').forEach(function (menu) {
+                    if (!isClickInsideDropdown) {
+                        menu.classList.add('hidden');
+                    }
+                });
+
+                if (event.target.matches('.dropdown-toggle')) {
+                    var dropdownMenu = event.target.nextElementSibling;
+                    dropdownMenu.classList.toggle('hidden');
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>
