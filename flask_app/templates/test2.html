@@ -27,8 +27,21 @@
                 <div class="flex justify-end mt-2">
                     <button class="bg-blue-500 text-white px-4 py-2 rounded-full">Tweet</button>
                 </div>
+                
             </div>
+<script>
+    function toggleUserDropdown() {
+        document.getElementById('user-dropdown').classList.toggle('hidden');
+    }
 
+    document.addEventListener('click', function(event) {
+        var isClickInsideDropdown = event.target.closest('#user-dropdown, .w-full.flex.items-center.justify-between');
+
+        if (!isClickInsideDropdown) {
+            document.getElementById('user-dropdown').classList.add('hidden');
+        }
+    });
+</script>
             <!-- Tweets Feed -->
             <div class="space-y-4">
                 <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
@@ -89,6 +102,18 @@
                 </nav>
                 <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full w-full mt-4">Tweet</button>
                 <button id="theme-toggle" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-full w-full mt-4">Toggle Dark Mode</button>
+            <div class="relative mt-4">
+                    <button type="button" class="w-full flex items-center justify-between bg-white p-2 rounded-full shadow-md hover:bg-gray-100 focus:outline-none" onclick="toggleUserDropdown()">
+                        <div class="flex items-center">
+                            <img class="w-8 h-8 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
+                            <div class="ml-2 text-sm font-semibold text-gray-700">{{ loggedUser.first_name }} {{ loggedUser.last_name }}</div>
+                        </div>
+                        <i class="fas fa-ellipsis-h text-gray-700"></i>
+                    </button>
+                    <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border rounded shadow-md">
+                        <a href="/logout" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

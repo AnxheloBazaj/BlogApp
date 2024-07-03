@@ -4,16 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>Twitter Home Template</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 </head>
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
 
 <body class="bg-gray-100">
-    <div class="flex flex-col min-h-screen lg:flex-row">
+    <div class="min-h-screen flex">
         <!-- Sidebar -->
-        <div class="w-1/4 bg-white p-4 border-r border-gray-200">
+        <div class="w-1/4 bg-white p-4 border-r border-gray-200 ">
             <div class="sticky top-0 space-y-4">
                 <div class="text-2xl font-bold mb-6">NotTwitter</div>
                 <nav class="space-y-4">
@@ -63,86 +68,13 @@
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 p-4">
-            <!-- Profile Section -->
-            <div class="bg-white p-4 rounded-lg shadow-md mb-4">
-                <div class="flex space-x-4">
-                    <img class="w-24 h-24 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
-                    <div>
-                        <h2 class="font-bold text-2xl">{{user.first_name}} {{user.last_name}}</h2>
-                        <!-- <div class="text-gray-600">@username</div> -->
-                        <div class="text-gray-600 mt-2">Bio: This is a sample bio.</div>
-                    </div>
-                </div>
-                <div class="mt-4 flex space-x-4">
-                    <div class="flex items-center space-x-1">
-                        <span class="font-bold">100</span>
-                        <span class="text-gray-600">Following</span>
-                    </div>
-                    <div class="flex items-center space-x-1">
-                        <span class="font-bold">200</span>
-                        <span class="text-gray-600">Followers</span>
-                    </div>
-                </div>
-            </div>
-            {% if loggedUser.id == user.id %}
-            <form action="/create/post" method="POST" enctype="multipart/form-data"
-                class="bg-white p-4 rounded-lg shadow-md mb-4">
-                <div class="flex space-x-4">
-                    <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
-                    <textarea name="description" class="w-full bg-gray-100 p-2 rounded-lg focus:outline-none" rows="2"
-                        placeholder="What's happening?"></textarea>
-                </div>
-                <div class="flex justify-between items-center mt-2">
-                    <div class="flex items-center space-x-4">
-                        <button type="button" class="flex items-center text-blue-500 hover:text-blue-600"
-                            onclick="document.getElementById('photo-input').click()">
-                            <i class="fas fa-image">+Add Photo</i>
-                        </button>
-                    </div>
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-full">Tweet</button>
-                </div>
-                <input type="file" id="photo-input" name="image" accept="image/png, image/jpg, image/jpeg"
-                    class="hidden" onchange="showPhotoPreview(event)">
-                <div id="photo-preview" class="mt-2 hidden">
-                    <img id="photo-preview-img" src="#" alt="Photo Preview" class="rounded-lg max-h-64">
-                    <button type="button" class="mt-2 text-red-500 hover:text-red-700" onclick="removePhoto()">Remove
-                        Photo</button>
-                </div>
-            </form>
-            {%endif%}
-            <!-- Tweets Section -->
-            <div class="space-y-4">
-                <!-- <div class="bg-white p-4 rounded-lg shadow-md">
-                    <div class="flex space-x-4">
-                        <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
-                        <div class="w-full">
-                            <div class="flex justify-between">
-                                <div>
-                                    <span class="font-bold">User Name</span>
-                                    <span class="text-gray-600">@username</span>
-                                    <span class="text-gray-600">· 1h</span>
-                                </div>
-                                <div class="text-gray-600">•••</div>
-                            </div>
-                            <div class="mt-2">
-                                <p>This is a sample tweet. #hashtag</p>
-                                <img src="https://via.placeholder.com/600x400" alt="Tweet Image" class="mt-2 rounded-lg">
-                            </div>
-                            <div class="flex justify-between mt-2 text-gray-600">
-                                <span class="hover:text-blue-500"><i class="far fa-comment"></i> 5</span>
-                                <span class="hover:text-green-500"><i class="far fa-retweet"></i> 10</span>
-                                <span class="hover:text-red-500"><i class="far fa-heart"></i> 20</span>
-                                <span class="hover:text-blue-500"><i class="far fa-share-square"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- Repeat the above block for more tweets -->
-            </div>
+        <div id="tweet" class="w-1/2 p-4">
+
+            <!-- Tweets Feed -->
+            <h1 class="text-2xl font-bold mb-6">Post</h1>
             <div class="space-y-4">
                 {% if posts %}
-                {% for post in posts %}
+                {%for post in posts%}
                 <div class="bg-white p-4 rounded-lg shadow-md">
                     <div class="flex space-x-4">
                         <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
@@ -209,16 +141,29 @@
                                 {% endif %}
 
                             </div>
+                            <form action="/create/comment" method="POST"
+                                class="bg-white p-4 rounded-lg shadow-md mb-4">
+                                <div class="flex space-x-4 justify-between items-center mt-2">
+                                    <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150"
+                                        alt="User Avatar">
+                                    <textarea name="description"
+                                        class="w-full bg-gray-100 p-2 rounded-lg focus:outline-none" rows="2"
+                                        placeholder="What's happening?"></textarea>
+                                    <button type="submit"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded-full">Tweet</button>
+                                </div>
+
+                            </form>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+                {%endfor%}
                 {% endif %}
             </div>
         </div>
 
         <!-- Extra Section -->
-        <div class="lg:w-1/4 p-4 space-y-4">
+        <div class="w-1/4 p-4 space-y-4">
             <div class="bg-white p-4 rounded-lg shadow-md sticky top-0">
                 <h2 class="font-bold text-lg mb-2">Trends for you</h2>
                 <div class="space-y-2">
@@ -227,8 +172,10 @@
                     <div class="text-gray-600">#TrendingTopic3</div>
                 </div>
             </div>
+            <!-- Additional sections as needed -->
         </div>
     </div>
+    <script src="/static/js/script.js"></script>
 </body>
-<script src="/static/js/script.js"></script>
+
 </html>

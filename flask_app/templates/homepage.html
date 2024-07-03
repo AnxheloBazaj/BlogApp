@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Twitter Home Template</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 <style>
     html {
@@ -17,22 +19,53 @@
 <body class="bg-gray-100">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
-        <div class="w-1/4 bg-white p-4 border-r border-gray-200">
+        <div class="w-1/4 bg-white p-4 border-r border-gray-200 ">
             <div class="sticky top-0 space-y-4">
-                <div class="text-2xl font-bold mb-6">Twitter</div>
+                <div class="text-2xl font-bold mb-6">NotTwitter</div>
                 <nav class="space-y-4">
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Home</a>
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Explore</a>
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Notifications</a>
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Messages</a>
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Bookmarks</a>
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Lists</a>
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">Profile</a>
-                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold">More</a>
+                    <a href="/" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold flex items-center">
+                        <i class="material-icons mr-2">home</i> Home
+                    </a>
+                    <a href="explore.html" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold flex items-center">
+                        <i class="material-icons mr-2">explore</i> Explore
+                    </a>
+                    <a href="notifications.html" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold flex items-center">
+                        <i class="material-icons mr-2">notifications</i> Notifications
+                    </a>
+                    <a href="messages.html" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold flex items-center">
+                        <i class="material-icons mr-2">mail</i> Messages
+                    </a>
+                    <a href="/favourites" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold flex items-center">
+                        <i class="material-icons mr-2">bookmark</i> Bookmarks
+                    </a>
+                    <a href="lists.html" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold flex items-center">
+                        <i class="material-icons mr-2">list</i> Lists
+                    </a>
+                    <a href="/profile/{{loggedUser.id}}" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold flex items-center">
+                        <i class="material-icons mr-2">person</i> Profile
+                    </a>
+                    <a href="#" class="block py-2 px-4 rounded hover:bg-gray-200 font-semibold flex items-center">
+                        <i class="material-icons mr-2">more_horiz</i> More
+                    </a>
                 </nav>
-                <a href="#tweet"><button
-                        class="bg-blue-500 hover:bg-black text-white px-4 py-2 rounded-full w-full mt-4">Tweet</button></a>
+                <a href="#tweet">
+                    <button class="bg-blue-500 hover:bg-black text-white px-4 py-2 rounded-full w-full mt-4">Tweet</button>
+                </a>
+                <!-- User Button -->
+                <div class="relative mt-4">
+                    <button type="button" class="w-full flex items-center justify-between bg-gray-900 p-2 rounded-full shadow-md hover:bg-gray-200 focus:outline-none" onclick="toggleUserDropdown()">
+                        <div class="flex items-center">
+                            <img class="w-8 h-8 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
+                            <div class="ml-2 text-sm font-semibold text-gray-700">{{ loggedUser.first_name }} {{ loggedUser.last_name }}</div>
+                        </div>
+                        <i class="material-icons text-gray-700">more_horiz</i>
+                    </button>
+                    <div id="user-dropdown" class="hidden absolute right-0 bottom-full mb-2 w-48 bg-white border rounded shadow-md">
+                        <a href="/logout" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
+                    </div>
+                </div>
             </div>
+            
         </div>
 
         <!-- Main Content -->
@@ -49,7 +82,7 @@
                     <div class="flex items-center space-x-4">
                         <button type="button" class="flex items-center text-blue-500 hover:text-blue-600"
                             onclick="document.getElementById('photo-input').click()">
-                            <i class="fas fa-image">adddd</i>
+                            <i class="fas fa-image">+Add Photo</i>
                         </button>
                     </div>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-full">Tweet</button>
@@ -65,86 +98,80 @@
 
             <!-- Tweets Feed -->
             <div class="space-y-4">
-                {%if posts%}
-                {%for post in posts%}
+                {% if posts %}
+                {% for post in posts %}
                 <div class="bg-white p-4 rounded-lg shadow-md">
                     <div class="flex space-x-4">
                         <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
                         <div class="w-full">
                             <div class="flex justify-between relative">
                                 <div>
-                                    <span class="font-bold">{{post.first_name}} {{post.last_name}}</span>
-                                    <!-- <span class="text-gray-600">@username</span> -->
-                                    <span class="text-gray-600">{{post.created_at}}</span>
+                                    <a href="/profile/{{post.user_id}}" class="font-bold">{{ post.first_name }} {{
+                                        post.last_name }}</a>
+                                    <span class="text-gray-600">{{ post.created_at }}</span>
                                 </div>
-                                {%if loggedUser.id == post.user_id%}
+                                {% if loggedUser.id == post.user_id or loggedUser.role =='admin'%}
                                 <div class="text-gray-600 relative">
                                     <button type="button" class="dropdown-toggle focus:outline-none">
                                         •••
                                     </button>
                                     <div
                                         class="dropdown-menu hidden absolute right-0 mt-2 py-2 w-48 bg-white border rounded shadow-md">
-                                        <a href="" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Edit</a>
-                                        <a href="/delete/post/{{post.id}}"" class=" block px-4 py-2 text-gray-800
-                                            hover:bg-gray-200">Delete</a>
+                                        {% if loggedUser.id == post.user_id%}
+                                        <a class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                                            onclick="editPost('{{ post.id }}')">Edit</a>
+                                        {%endif%}
+                                        <a href="/delete/post/{{ post.id }}"
+                                            class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Delete</a>
                                     </div>
                                 </div>
-                                {%endif%}
+                                {% endif %}
                             </div>
                             <div class="mt-2">
-                                <p class="text-clip w-3/4">{{post.description}}</p>
-                                {%if post.image%}
-                                <img src="/static/UPLOADED_FOLDER/{{post.image}}" alt="Tweet Image"
-                                    class="mt-2 rounded-lg object-cover" style="width: 37rem; height: 25rem;">
-                                {%endif%}
+                                <p id="description-{{ post.id }}" class="text-clip w-3/4">{{ post.description }}</p>
+                                <form id="edit-form-{{ post.id }}" action="/update/post/{{ post.id }}" method="POST"
+                                    class="hidden">
+                                    <textarea id="textarea-{{ post.id }}" name="description"
+                                        class="w-full bg-gray-100 p-2 rounded-lg focus:outline-none">{{ post.description }}</textarea>
+                                    <button type="submit" id="save-{{ post.id }}"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded-full mt-2">Save</button>
+                                </form>
                             </div>
+                            {% if post.image %}
+                            <img src="/static/UPLOADED_FOLDER/{{ post.image }}" alt="Tweet Image"
+                                class="mt-2 border rounded-lg object-fill" style="width: 37rem; height: 25rem;">
+                            {% endif %}
                             <div class="flex justify-between mt-2 text-gray-600">
-                                <span class="hover:text-blue-500"><i class="far fa-comment"></i> 5</span>
-                                <span class="hover:text-green-500"><i class="far fa-retweet"></i> 10</span>
-                                <span class="hover:text-red-500"><i class="far fa-heart"></i> 20</span>
-                                <span class="hover:text-blue-500"><i class="far fa-share-square"></i></span>
+                                
+                                {% if post.liked_user_ids and loggedUser.id|string in post.liked_user_ids.split(',') %}
+                                <a href="/unlike/{{post.id}}" class=" text-red-500 hover:text-black flex items-center">
+                                    <i class="material-icons">favorite</i> <span class="ml-1">{{post.like_count}}</span>
+                                </a>
+                                {%else%}
+                                <a href="/like/{{post.id}}" class="hover:text-red-500 flex items-center">
+                                    <i class="material-icons">favorite</i> <span class="ml-1">{{post.like_count}}</span>
+                                </a>
+                                {% endif %}
+                                <a href="/view/post/{{post.id}}" class="hover:text-blue-500 flex items-center">
+                                    <i class="material-icons">comment</i> <span class="ml-1">{{post.comment_count}}</span>
+                                </a>
+                                {% if post.favourited_user_ids and loggedUser.id|string in post.favourited_user_ids.split(',') %}
+                                <a href="/unfavourite/{{post.id}}" class=" text-blue-600 hover:text-black flex items-center">
+                                    <i class="material-icons">bookmark</i> <span class="ml-1">{{post.favourite_count}}</span>
+                                </a>
+                                {%else%}
+                                <a href="/add_to_fav/{{post.id}}" class="hover:text-blue-600 flex items-center">
+                                    <i class="material-icons">bookmark</i> <span class="ml-1">{{post.favourite_count}}</span>
+                                </a>
+                                {% endif %}
+
                             </div>
                         </div>
                     </div>
                 </div>
-                {%endfor%}
-                {%endif%}
-                <!-- <div class="bg-white p-4 rounded-lg shadow-md">
-                    <div class="flex space-x-4">
-                        <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150" alt="User Avatar">
-                        <div class="w-full">
-                            <div class="flex justify-between relative">
-                                <div>
-                                    <span class="font-bold">User Name</span>
-                                    <span class="text-gray-600">@username</span>
-                                    <span class="text-gray-600">· 1h</span>
-                                </div>
-                                <div class="text-gray-600">
-                                    <button type="button" class="focus:outline-none" onclick="toggleDropdown(event)">
-                                        •••
-                                    </button>
-                                    <div class="dropdown-menu hidden absolute right-0 mt-2 py-2 w-48 bg-white border rounded shadow-md">
-                                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Edit</a>
-                                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <p>This is a sample tweet. #hashtag</p>
-                                <img src="https://via.placeholder.com/600x400" alt="Tweet Image" class="mt-2 rounded-lg">
-                            </div>
-                            <div class="flex justify-between mt-2 text-gray-600">
-                                <span class="hover:text-blue-500"><i class="far fa-comment"></i> 5</span>
-                                <span class="hover:text-green-500"><i class="far fa-retweet"></i> 10</span>
-                                <span class="hover:text-red-500"><i class="far fa-heart"></i> 20</span>
-                                <span class="hover:text-blue-500"><i class="far fa-share-square"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- Repeat the above block for more tweets -->
+                {% endfor %}
+                {% endif %}
             </div>
-
         </div>
 
         <!-- Extra Section -->
@@ -161,7 +188,7 @@
         </div>
     </div>
 
-    <script>
+    <!-- <script>
         function showPhotoPreview(event) {
             var photoPreview = document.getElementById('photo-preview');
             var photoPreviewImg = document.getElementById('photo-preview-img');
@@ -192,6 +219,7 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             document.addEventListener('click', function (event) {
                 var isClickInsideDropdown = event.target.closest('.dropdown-menu, .dropdown-toggle');
+                var isClickInsideEditArea = event.target.closest('.edit-area, .dropdown-menu a');
 
                 document.querySelectorAll('.dropdown-menu').forEach(function (menu) {
                     if (!isClickInsideDropdown) {
@@ -203,10 +231,35 @@
                     var dropdownMenu = event.target.nextElementSibling;
                     dropdownMenu.classList.toggle('hidden');
                 }
+
+                if (!isClickInsideEditArea) {
+                    document.querySelectorAll('.edit-area').forEach(function (editArea) {
+                        var postId = editArea.dataset.postId;
+                        document.getElementById('description-' + postId).classList.remove('hidden');
+                        document.getElementById('edit-form-' + postId).classList.add('hidden');
+                    });
+                }
             });
         });
 
-    </script>
+        function editPost(postId) {
+            document.getElementById('description-' + postId).classList.add('hidden');
+            document.getElementById('edit-form-' + postId).classList.remove('hidden');
+        }
+
+        function toggleUserDropdown() {
+            document.getElementById('user-dropdown').classList.toggle('hidden');
+        }
+
+        document.addEventListener('click', function (event) {
+            var isClickInsideDropdown = event.target.closest('#user-dropdown, .w-full.flex.items-center.justify-between');
+
+            if (!isClickInsideDropdown) {
+                document.getElementById('user-dropdown').classList.add('hidden');
+            }
+        });
+    </script> -->
+    <script src="/static/js/script.js"></script>
 </body>
 
 </html>

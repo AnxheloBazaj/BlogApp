@@ -107,8 +107,21 @@ def Home():
         'id': session['user_id']
     }
     loggedUser = User.get_user_by_id(data)
-    # usersWhoFavourited = Vehicle.getAllFavourites(data)
+    # usersWhoLiked = Post.get_likers()
     return render_template('homepage.html.', posts=Post.getAllposts(), loggedUser=loggedUser )
+
+@app.route('/profile/<int:id>')
+def Profile(id):
+    if 'user_id' not in session:
+        return redirect('/')
+    data = {
+        'id': id
+    }
+    posts = Post.get_logged_posts(data)
+    user=User.get_user_by_id(data)
+    loggedUser = User.get_user_by_id({'id':session['user_id']})
+    # usersWhoLiked=Post.get_likers(data)
+    return render_template('profile.html', posts=posts,user=user, loggedUser=loggedUser)
 
 @app.route('/logout')
 def logout():
