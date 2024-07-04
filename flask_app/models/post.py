@@ -102,7 +102,7 @@ FROM
     posts
 LEFT JOIN
     users ON posts.user_id = users.id
-INNER JOIN
+Left JOIN
     favourites ON posts.id = favourites.post_id
 WHERE
     posts.id = %(post_id)s

@@ -68,3 +68,30 @@ document.addEventListener('click', function (event) {
         document.getElementById('user-dropdown').classList.add('hidden');
     }
 });
+
+
+function editComment(commentId) {
+    document.getElementById('comment-' + commentId).classList.add('hidden');
+    document.getElementById('edit-comment-form-' + commentId).classList.remove('hidden');
+}
+
+// Close the edit form if clicked outside
+document.addEventListener('click', function(event) {
+    const editForms = document.querySelectorAll('[id^="edit-comment-form-"]');
+    editForms.forEach((form) => {
+        if (!form.contains(event.target) && !event.target.matches('.edit-comment-button')) {
+            const commentId = form.id.replace('edit-comment-form-', '');
+            document.getElementById('comment-' + commentId).classList.remove('hidden');
+            form.classList.add('hidden');
+        }
+    });
+});
+
+// Stop propagation on form elements to prevent the form from closing when clicking inside
+const editForms = document.querySelectorAll('[id^="edit-comment-form-"]');
+editForms.forEach((form) => {
+    form.addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
+});
+

@@ -2,6 +2,7 @@ from flask_app import app
 from flask import render_template, redirect, session, request, flash
 from flask_app.models.post import Post
 from flask_app.models.user import User
+from flask_app.models.comment import Comment
 from flask_bcrypt import Bcrypt
 import os
 from datetime import datetime
@@ -110,8 +111,9 @@ def viewPost(id):
     data = {"post_id": id, "id": session["user_id"]}
     post = Post.get_post_by_id(data)
     loggedUser = User.get_user_by_id(data)
+    comments=Comment.get_all_comments_post(data)
     # usersWhoLiked=Show.get_likers(data)
-    return render_template("post2.html", post=post, loggedUser=loggedUser)
+    return render_template("post2.html", post=post, loggedUser=loggedUser, comments=comments)
 
 
 @app.route("/delete/post/<int:id>")
@@ -127,6 +129,7 @@ def deletePost(id):
         Post.delete_all_likes(data)
         Post.delete_all_post_Faves(data)
         Post.delete_post(data)
+        Comment.delete_all_comments(data)
     return redirect("/")
 
 

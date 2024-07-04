@@ -47,7 +47,7 @@
                         <i class="material-icons mr-2">more_horiz</i> More
                     </a>
                 </nav>
-                <a href="#tweet">
+                <a href="/">
                     <button class="bg-blue-500 hover:bg-black text-white px-4 py-2 rounded-full w-full mt-4">Tweet</button>
                 </a>
                 <!-- User Button -->
@@ -60,7 +60,7 @@
                         <i class="material-icons text-gray-700">more_horiz</i>
                     </button>
                     <div id="user-dropdown" class="hidden absolute right-0 bottom-full mb-2 w-48 bg-white border rounded shadow-md">
-                        <a href="/logout" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
+                        <a href="/logout" class="block px-4 py-2 text-gray-800 hover:bg-gray-200 flex text-center">Logout<i class="material-icons mr-2 text-red-500">logout</i> </a>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
         <div id="tweet" class="w-1/2 p-4">
 
             <!-- Tweets Feed -->
-            <h1 class="text-2xl font-bold mb-6">Post</h1>
+            <h1 class="text-2xl font-bold mb-6">Favourites</h1>
             <div class="space-y-4">
                 {% if posts %}
                 {%for post in posts%}
@@ -94,21 +94,21 @@
                                         class="dropdown-menu hidden absolute right-0 mt-2 py-2 w-48 bg-white border rounded shadow-md">
                                         {% if loggedUser.id == post.user_id%}
                                         <a class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                                            onclick="editPost('{{ post.id }}')">Edit</a>
+                                            onclick="editPost('{{ post.postid }}')">Edit</a>
                                         {%endif%}
-                                        <a href="/delete/post/{{ post.id }}"
+                                        <a href="/delete/post/{{ post.postid }}"
                                             class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Delete</a>
                                     </div>
                                 </div>
                                 {% endif %}
                             </div>
                             <div class="mt-2">
-                                <p id="description-{{ post.id }}" class="text-clip w-3/4">{{ post.description }}</p>
-                                <form id="edit-form-{{ post.id }}" action="/update/post/{{ post.id }}" method="POST"
-                                    class="hidden">
-                                    <textarea id="textarea-{{ post.id }}" name="description"
+                                <p id="description-{{ post.postid }}" class="text-clip w-3/4">{{ post.description }}</p>
+                                <form id="edit-form-{{ post.postid }}" action="/update/post/{{ post.postid }}"
+                                    method="POST" class="hidden">
+                                    <textarea id="textarea-{{ post.postid }}" name="description"
                                         class="w-full bg-gray-100 p-2 rounded-lg focus:outline-none">{{ post.description }}</textarea>
-                                    <button type="submit" id="save-{{ post.id }}"
+                                    <button type="submit" id="save-{{ post.postid }}"
                                         class="bg-blue-500 text-white px-4 py-2 rounded-full mt-2">Save</button>
                                 </form>
                             </div>
@@ -117,47 +117,45 @@
                                 class="mt-2 border rounded-lg object-fill" style="width: 37rem; height: 25rem;">
                             {% endif %}
                             <div class="flex justify-between mt-2 text-gray-600">
-                                
+
                                 {% if post.liked_user_ids and loggedUser.id|string in post.liked_user_ids.split(',') %}
-                                <a href="/unlike/{{post.id}}" class=" text-red-500 hover:text-black flex items-center">
+                                <a href="/unlike/{{post.postid}}" class=" text-red-500 hover:text-black flex items-center">
                                     <i class="material-icons">favorite</i> <span class="ml-1">{{post.like_count}}</span>
                                 </a>
                                 {%else%}
-                                <a href="/like/{{post.id}}" class="hover:text-red-500 flex items-center">
+                                <a href="/like/{{post.postid}}" class="hover:text-red-500 flex items-center">
                                     <i class="material-icons">favorite</i> <span class="ml-1">{{post.like_count}}</span>
                                 </a>
                                 {% endif %}
-                                <a href="/view/post/{{post.id}}" class="hover:text-blue-500 flex items-center">
-                                    <i class="material-icons">comment</i> <span class="ml-1">{{post.comment_count}}</span>
+                                <a href="/view/post/{{post.postid}}" class="hover:text-blue-500 flex items-center">
+                                    <i class="material-icons">comment</i> <span
+                                        class="ml-1">{{post.comment_count}}</span>
                                 </a>
-                                {% if post.favourited_user_ids and loggedUser.id|string in post.favourited_user_ids.split(',') %}
-                                <a href="/unfavourite/{{post.id}}" class=" text-blue-600 hover:text-black flex items-center">
-                                    <i class="material-icons">bookmark</i> <span class="ml-1">{{post.favourite_count}}</span>
+                                {% if post.favourited_user_ids and loggedUser.id|string in
+                                post.favourited_user_ids.split(',') %}
+                                <a href="/unfavourite/{{post.postid}}"
+                                    class=" text-blue-600 hover:text-black flex items-center">
+                                    <i class="material-icons">bookmark</i> <span
+                                        class="ml-1">{{post.favourite_count}}</span>
                                 </a>
                                 {%else%}
-                                <a href="/add_to_fav/{{post.id}}" class="hover:text-blue-600 flex items-center">
-                                    <i class="material-icons">bookmark</i> <span class="ml-1">{{post.favourite_count}}</span>
+                                <a href="/add_to_fav/{{post.postid}}" class="hover:text-blue-600 flex items-center">
+                                    <i class="material-icons">bookmark</i> <span
+                                        class="ml-1">{{post.favourite_count}}</span>
                                 </a>
                                 {% endif %}
 
                             </div>
-                            <form action="/create/comment" method="POST"
-                                class="bg-white p-4 rounded-lg shadow-md mb-4">
-                                <div class="flex space-x-4 justify-between items-center mt-2">
-                                    <img class="w-12 h-12 rounded-full" src="https://via.placeholder.com/150"
-                                        alt="User Avatar">
-                                    <textarea name="description"
-                                        class="w-full bg-gray-100 p-2 rounded-lg focus:outline-none" rows="2"
-                                        placeholder="What's happening?"></textarea>
-                                    <button type="submit"
-                                        class="bg-blue-500 text-white px-4 py-2 rounded-full">Tweet</button>
-                                </div>
 
-                            </form>
+
+
+
                         </div>
                     </div>
                 </div>
                 {%endfor%}
+                {%else%}
+                <h1 class="text-2xl font-bold mb-6 ">Nothing here yet!</h1>
                 {% endif %}
             </div>
         </div>

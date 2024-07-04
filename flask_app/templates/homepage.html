@@ -61,7 +61,7 @@
                         <i class="material-icons text-gray-700">more_horiz</i>
                     </button>
                     <div id="user-dropdown" class="hidden absolute right-0 bottom-full mb-2 w-48 bg-white border rounded shadow-md">
-                        <a href="/logout" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
+                        <a href="/logout" class="block px-4 py-2 text-gray-800 hover:bg-gray-200 flex text-center">Logout<i class="material-icons mr-2 text-red-500">logout</i> </a>
                     </div>
                 </div>
             </div>
@@ -82,17 +82,16 @@
                     <div class="flex items-center space-x-4">
                         <button type="button" class="flex items-center text-blue-500 hover:text-blue-600"
                             onclick="document.getElementById('photo-input').click()">
-                            <i class="fas fa-image">+Add Photo</i>
+                            <i class="material-icons mr-2">add_photo_alternate</i>
                         </button>
                     </div>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-full">Tweet</button>
                 </div>
                 <input type="file" id="photo-input" name="image" accept="image/png, image/jpg, image/jpeg"
                     class="hidden" onchange="showPhotoPreview(event)">
-                <div id="photo-preview" class="mt-2 hidden">
+                <div id="photo-preview" class="mt-2 hidden flex items-start">
                     <img id="photo-preview-img" src="#" alt="Photo Preview" class="rounded-lg max-h-64">
-                    <button type="button" class="mt-2 text-red-500 hover:text-red-700" onclick="removePhoto()">Remove
-                        Photo</button>
+                    <button type="button" class="mt-2 text-red-500 hover:text-red-700 " onclick="removePhoto()"><i class="material-icons mr-2">delete</i></button>
                 </div>
             </form>
 
